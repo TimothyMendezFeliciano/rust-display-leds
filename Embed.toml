@@ -1,0 +1,20 @@
+[default.probe]
+protocol = "Swd"
+usb_vid = "0d28"
+usb_pid = "0204"
+serial = "9906360200052820E57938DB2A0775DA000000006E052820"
+
+[default.flashing]
+enabled = true
+
+[default.general]
+chip = "nrf52833_xxAA"
+
+[default.rtt]
+enabled = false
+
+[default.gdb]
+enabled = true
+
+[default.reset]
+halt_afterwards = true
