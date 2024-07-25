@@ -14,89 +14,35 @@ fn main() -> ! {
     if let Some(mut board) = Board::take() {
         let mut timer = Timer::new(board.TIMER0);
         let mut display = Display::new(board.display_pins);
+        let mut index = 2;
+        let encendido = 1;
 
         #[allow(non_snake_case)]
-        let letter_I = [
-            [0, 0, 1, 0, 0],
-            [0, 1, 0, 1, 0],
-            [1, 1, 1, 1, 1],
-            [1, 0, 0, 0, 1],
-            [1, 0, 0, 0, 1],
+        let mut letter_t = [
+            [0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0],
+            [0, 0, encendido, 0, 0],
+            [0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0],
         ];
 
-        let heart = [
-            [0, 1, 1, 0, 0],
-            [0, 1, 0, 1, 0],
-            [0, 1, 1, 0, 0],
-            [0, 1, 0, 1, 0],
-            [0, 1, 1, 0, 0],
-        ];
-
-        #[allow(non_snake_case)]
-        let letter_R = [
-            [0, 1, 1, 0, 0],
-            [0, 1, 0, 1, 0],
-            [0, 1, 1, 0, 0],
-            [0, 1, 0, 1, 0],
-            [0, 1, 0, 1, 0],
-        ];
-
-        #[allow(non_snake_case)]
-        let letter_u = [
-            [0, 1, 1, 1, 0],
-            [0, 0, 1, 0, 0],
-            [0, 0, 1, 0, 0],
-            [0, 0, 1, 0, 0],
-            [0, 1, 1, 1, 0],
-        ];
-
-        #[allow(non_snake_case)]
-        let letter_s = [
-            [1, 0, 0, 0, 0],
-            [1, 0, 0, 0, 0],
-            [1, 0, 0, 0, 0],
-            [1, 0, 0, 0, 0],
-            [1, 1, 1, 1, 0],
-        ];
-
-        #[allow(non_snake_case)]
-        let letter_t = [
-            [1, 1, 1, 1, 1],
-            [1, 1, 1, 1, 1],
-            [1, 1, 1, 1, 1],
-            [1, 1, 1, 1, 1],
-            [1, 1, 1, 1, 1],
-        ];
         loop {
             if let Ok(true) = board.buttons.button_a.is_low() {
-                display.show(&mut timer, [
-                    [1, 1, 1, 1, 1],
-                    [1, 1, 1, 1, 1],
-                    [1, 1, 1, 1, 1],
-                    [1, 1, 1, 1, 1],
-                    [1, 1, 1, 1, 1],
-                ], 1000);
+                if index < 4 {
+                    letter_t[2][index] = 0;
+                    letter_t[2][index+1] = encendido;
+                    index+=1;
+                }
+                display.show(&mut timer, letter_t, 2000);
                 display.clear();
                 timer.delay_ms(250_u32);
-            }
-                else if let Ok(true) = board.buttons.button_b.is_low()  {
-                    display.show(&mut timer, [
-                        [0, 1, 0, 1, 0],
-                        [1, 0, 1, 0, 1],
-                        [1, 0, 1, 0, 1],
-                        [1, 0, 0, 0, 1],
-                        [1, 0, 0, 0, 1],
-                    ], 1000 * 3);
-                    display.clear();
-                    timer.delay_ms(250_u32);
+            } else if let Ok(true) = board.buttons.button_b.is_low() {
+                if index >0 {
+                    letter_t[2][index] = 0;
+                    letter_t[2][index-1] = encendido;
+                    index-=1;
                 }
-            else {
-                display.show(&mut timer, letter_I, 1000);
-                display.show(&mut timer, heart, 1000);
-                display.show(&mut timer, letter_R, 1000);
-                display.show(&mut timer, letter_u, 1000);
-                display.show(&mut timer, letter_s, 1000);
-                display.show(&mut timer, letter_t, 1000);
+                display.show(&mut timer, letter_t, 2000);
                 display.clear();
                 timer.delay_ms(250_u32);
             }
